@@ -1,7 +1,10 @@
 #!/bin/bash
 #
 
+# Pi5
 MAC_ADDRESS=00:c0:ca:b7:9c:97
+# Pi4
+# MAC_ADDRESS=00:c0:ca:b7:9c:9b
 echo "adapter mac is $MAC_ADDRESS"
 WLAN_INTERFACE="$(ip -o link show | grep $MAC_ADDRESS | awk -F': ' '{print $2}')"
 
