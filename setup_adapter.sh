@@ -32,5 +32,5 @@ sudo iw dev $WLAN_INTERFACE set monitor none
 echo "bringing link up..."
 sudo ip link set $WLAN_INTERFACE up
 echo "setting channel 36"
-sudo iw dev $WLAN_INTERFACE set channel 36
+sudo iw dev $WLAN_INTERFACE set channel 40
 # confirm with iwconfig wlan1
