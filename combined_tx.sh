@@ -88,5 +88,4 @@ ffmpeg \
     -f v4l2 -input_format yuyv422 -video_size $BROADCAST_SIZE -framerate $FRAME_RATE -i "$CAPTURE_INPUT" \
     -filter_complex "[0:v]split=2[broadcast_out][preview_in];[preview_in]scale=$MONITOR_SIZE,format=rgb565le[preview_out]" \
     -map "[preview_out]" -f fbdev /dev/fb0 \
-    -map "[broadcast_out]" -c:v h264_v4l2m2m -b:v 6M -f mpegts - \
-| nc -u -q0 127.0.0.1 $WFB_UDP_PORT
+    -map "[broadcast_out]" -c:v h264_v4l2m2m -b:v 6M -f mpegts "udp://127.0.0.1:$WFB_UDB_PORT?pkt_size=1316&buffer_size=1000000"
