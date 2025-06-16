@@ -1,0 +1,16 @@
+to regenerate keys run wfb_keygn
+drone.key should be renamed to tx.key
+gs.key should be renamed to rx.key
+
+setup_adapter.sh is for setting up the wifi adapter
+
+find this ID via "ls -l /dev/v4l/by-id/"
+/dev/v4l/by-id/usb-MACROSILICON_USB3_Video_67720542-video-index0
+
+SOFTWARE READ
+ffmpeg -f v4l2 -input_format yuyv422 -video_size 1920x1080 -framerate 30 -i /dev/v4l/by-id/usb-MACROSILICON_USB3_Video_67720542-video-index0 -c:v libx264  -t 20 hw_capture_test.mp4
+
+ffmpeg -f v4l2 -input_format yuyv422 -video_size 1920x1080 -framerate 30 -i /dev/v4l/by-id/usb-MACROSILICON_USB3_Video_67720542-video-index0 -c:v h264_v4l2m2m -b:v 6M -t 20 hw_capture_test.mp4
+
+compressed stream from hardware device, re-encoded for GPU:
+ffmpeg -f v4l2 -input_format mjpeg -video_size 1920x1080 -framerate 30 -i /dev/v4l/by-id/usb-MACROSILICON_USB3_Video_67720542-video-index0 -pix_fmt yuv420p -c:v h264_v4l2m2m -b:v 6M -t 20 hw_capture_test.mp4

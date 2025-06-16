@@ -1,5 +1,5 @@
 tx:
-	sudo wfb_tx -l 1000 -K ./tx.key -p 1 -u 5001 wlan1
+	sudo wfb_tx -l 1000 -K ./tx.key -p 1 -u 5600 wlan1
 
 rx:
 	sudo wfb_rx -l 1000 -K ./rx.key -p 1 -u 5000 wlan1
