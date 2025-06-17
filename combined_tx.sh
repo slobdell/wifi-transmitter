@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Pi5
-MAC_ADDRESS=00:c0:ca:b7:9c:97
+# MAC_ADDRESS=00:c0:ca:b7:9c:97
 # Pi4
 MAC_ADDRESS=00:c0:ca:b7:9c:9b
 FRAME_RATE=30
@@ -14,6 +14,7 @@ CAPTURE_INPUT=/dev/v4l/by-id/usb-MACROSILICON_USB3_Video_67720542-video-index0
 WFB_INTERFACE=wlan1
 WFB_UDP_PORT=5600
 ABSTRACT_PORT=1
+WIFI_CHANNEL=40
 
 echo "adapter mac is $MAC_ADDRESS"
 WLAN_INTERFACE="$(ip -o link show | grep $MAC_ADDRESS | awk -F': ' '{print $2}')"
@@ -45,7 +46,7 @@ sudo iw dev $WLAN_INTERFACE set monitor none
 echo "bringing link up..."
 sudo ip link set $WLAN_INTERFACE up
 echo "setting channel 36"
-sudo iw dev $WLAN_INTERFACE set channel 40
+sudo iw dev $WLAN_INTERFACE set channel $WIFI_CHANNEL
 # confirm with iwconfig wlan1
 #
 # This script resets the USB capture device at path 2-2.
