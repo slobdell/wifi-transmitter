@@ -1,0 +1,22 @@
+# place file in /etc/systemd/system/wfb-transmitter.service
+# sudo systemctl daemon-reload
+# sudo systemctl enable wfb-transmitter.service
+# sudo systemctl start wfb-transmitter.service
+# View Output: sudo journalctl -u wfb-transmitter.service -f
+
+[Unit]
+Description=WiFiBroadcast-NG Transmitter Service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/home/eblimp/projects/wifi-transmitter
+ExecStart=/home/eblimp/projects/wifi-transmitter/combined_rx.sh
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
