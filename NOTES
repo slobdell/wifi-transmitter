@@ -26,3 +26,8 @@ sudo systemctl start hide-cursor@tty1.service
 
 install hidecursor to
 /etc/systemd/system/getty@tty1.service.d/hidecursor.conf
+On Pi 5, this works:
+sudo ffmpeg -probesize 1M -fifo_size 5000000 -overrun_nonfatal 1 -i udp://127.0.0.1:5000 -filter_complex "[0:v]format=rgb565le[out]" -map "[out]" -f fbdev /dev/fb0
+
+THIS WORKED FINAL
+sudo ffmpeg -probesize 1M -fifo_size 5000000 -overrun_nonfatal 1 -i udp://127.0.0.1:5000 -vf "format=rgb565le" -f fbdev /dev/fb0
