@@ -13,8 +13,8 @@ After=network-online.target
 Type=simple
 User=root
 Group=root
-WorkingDirectory=/home/eblimp/projects/video-tx-rx
-ExecStart=/home/eblimp/projects/video-tx-rx/combined_tx.sh
+WorkingDirectory=/home/eblimp/projects/wifi-transmitter
+ExecStart=/home/eblimp/projects/wifi-transmitter/combined_tx.sh
 Restart=on-failure
 RestartSec=5
 

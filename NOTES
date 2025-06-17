@@ -17,3 +17,12 @@ ffmpeg -f v4l2 -input_format mjpeg -video_size 1920x1080 -framerate 30 -i /dev/v
 
 
 This has been set up as a service: systemctl status wfb-transmitter.service
+
+Add a service with:
+sudo systemctl daemon-reload
+sudo systemctl enable hide-cursor@tty1.service
+sudo systemctl start hide-cursor@tty1.service
+
+
+install hidecursor to
+/etc/systemd/system/getty@tty1.service.d/hidecursor.conf

@@ -1,0 +1,16 @@
+# install to /etc/systemd/system/hide-cursor@tty1.service
+
+[Unit]
+Description=Hide blinking cursor on tty1
+After=getty@tty1.service
+
+[Service]
+ExecStart=/usr/bin/setterm -cursor off
+Type=oneshot
+RemainAfterExit=yes
+StandardOutput=tty
+StandardInput=tty
+TTYPath=/dev/tty1
+
+[Install]
+WantedBy=getty.target
