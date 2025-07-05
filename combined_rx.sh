@@ -5,7 +5,7 @@ MAC_ADDRESS=00:c0:ca:b7:9c:97
 WFB_INTERFACE=wlan1
 WFB_UDP_PORT=5000
 ABSTRACT_PORT=1
-WIFI_CHANNEL=40
+WIFI_CHANNEL=9
 
 echo "adapter mac is $MAC_ADDRESS"
 WLAN_INTERFACE="$(ip -o link show | grep $MAC_ADDRESS | awk -F': ' '{print $2}')"

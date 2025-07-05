@@ -14,7 +14,7 @@ CAPTURE_INPUT=/dev/v4l/by-id/usb-MACROSILICON_USB3_Video_67720542-video-index0
 WFB_INTERFACE=wlan1
 WFB_UDP_PORT=5600
 ABSTRACT_PORT=1
-WIFI_CHANNEL=40
+WIFI_CHANNEL=9
 
 echo "adapter mac is $MAC_ADDRESS"
 WLAN_INTERFACE="$(ip -o link show | grep $MAC_ADDRESS | awk -F': ' '{print $2}')"
