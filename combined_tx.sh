@@ -4,7 +4,7 @@
 # MAC_ADDRESS=00:c0:ca:b7:9c:97
 # Pi4
 MAC_ADDRESS=00:c0:ca:b7:9c:9b
-FRAME_RATE=30
+FRAME_RATE=25
 BROADCAST_SIZE=1280x720
 MONITOR_SIZE=1280x720
 
@@ -87,6 +87,6 @@ sudo wfb_tx -l 1000 -K /home/eblimp/projects/wifi-transmitter/tx.key -p 1 -u $WF
 
 ffmpeg \
     -f v4l2 -input_format yuyv422 -video_size $BROADCAST_SIZE -framerate $FRAME_RATE -i "$CAPTURE_INPUT" \
-    -filter_complex "[0:v]split=2[broadcast_out][preview_in];[preview_in]scale=$MONITOR_SIZE,format=rgb565le[preview_out]" \
+    -filter_complex "[0:v]split=2[broadcast_out][preview_in];[preview_in]scale=$MONITOR_SIZE,format=rgb565le[preview_out];[broadcast_out]scale=128:64:force_original_aspect_ratio=increase,crop=128:64[final_broadcast]" \
     -map "[preview_out]" -f fbdev /dev/fb0 \
-    -map "[broadcast_out]" -c:v h264_v4l2m2m -b:v 6M -f mpegts "udp://127.0.0.1:$WFB_UDP_PORT?pkt_size=1316&buffer_size=1000000"
+    -map "[final_broadcast]" -c:v h264_v4l2m2m -b:v 500k -f mpegts "udp://127.0.0.1:$WFB_UDP_PORT?pkt_size=1316&buffer_size=1000000"
