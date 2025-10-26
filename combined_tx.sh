@@ -4,7 +4,7 @@
 # MAC_ADDRESS=00:c0:ca:b7:9c:97
 # Pi4
 MAC_ADDRESS=00:c0:ca:b7:9c:9b
-FRAME_RATE=25
+FRAME_RATE=20
 BROADCAST_SIZE=1280x720
 MONITOR_SIZE=1280x720
 
@@ -91,24 +91,21 @@ sudo wfb_tx -l 1000 -K /home/eblimp/projects/wifi-transmitter/tx.key -p 1 -u $WF
 #    -map "[preview_out]" -f fbdev /dev/fb0 \
 #    -map "[final_broadcast]" -c:v h264_v4l2m2m -b:v 200k -f mpegts "udp://127.0.0.1:$WFB_UDP_PORT?pkt_size=1316&buffer_size=1000000"
 
-# real-time
+# real-time (v2, with sharpening and optimizations)
 #ffmpeg \
 #    -fflags nobuffer \
 #    -f v4l2 -input_format yuyv422 -video_size $BROADCAST_SIZE -framerate $FRAME_RATE -i "$CAPTURE_INPUT" \
-#    -filter_complex "[0:v]split=2[broadcast_out][preview_in];[preview_in]scale=$MONITOR_SIZE,format=rgb565le[preview_out];[broadcast_out]fps=20,scale=128:64:force_original_aspect_ratio=increase,crop=128:64,format=yuv420p[final_broadcast]" \
+#    -filter_complex "[0:v]split=2[broadcast_out][preview_in]; \
+#                     [preview_in]format=rgb565le[preview_out]; \
+#                     [broadcast_out]scale=128:64:force_original_aspect_ratio=increase:flags=lanczos,crop=128:64,unsharp=5:5:0.5,format=yuv420p[final_broadcast]" \
 #    -map "[preview_out]" -f fbdev /dev/fb0 \
 #    -map "[final_broadcast]" -flags low_delay -c:v h264_v4l2m2m -b:v 200k -f mpegts "udp://127.0.0.1:$WFB_UDP_PORT?pkt_size=1316&buffer_size=1000000"
 
-# delay didnt work
-#ffmpeg \
-#    -f v4l2 -input_format yuyv422 -video_size $BROADCAST_SIZE -framerate $FRAME_RATE -i "$CAPTURE_INPUT" \
-#    -filter_complex "[0:v]split=2[broadcast_out][preview_in];[preview_in]scale=$MONITOR_SIZE,format=rgb565le[preview_out];[broadcast_out]fps=20,scale=128:64:force_original_aspect_ratio=increase,crop=128:64,format=yuv420p,setpts='PTS+2/TB'[final_broadcast]" \
-#    -map "[preview_out]" -f fbdev /dev/fb0 \
-#    -map "[final_broadcast]" -c:v h264_v4l2m2m -b:v 200k -f mpegts "udp://127.0.0.1:$WFB_UDP_PORT?pkt_size=1316&buffer_size=1000000"
-
-# 2 second delay
+# 2 second delay v2
 ffmpeg \
     -f v4l2 -input_format yuyv422 -video_size $BROADCAST_SIZE -framerate $FRAME_RATE -i "$CAPTURE_INPUT" \
-    -filter_complex "[0:v]split=2[broadcast_out][preview_in];[preview_in]scale=$MONITOR_SIZE,format=rgb565le[preview_out];[broadcast_out]fps=20,scale=128:64:force_original_aspect_ratio=increase,crop=128:64,format=yuv420p[final_broadcast]" \
+    -filter_complex "[0:v]split=2[broadcast_out][preview_in]; \
+                     [preview_in]scale=$MONITOR_SIZE,format=rgb565le[preview_out]; \
+                     [broadcast_out]fps=20,scale=128:64:force_original_aspect_ratio=increase:flags=lanczos,crop=128:64,unsharp=5:5:0.5,format=yuv420p[final_broadcast]" \
     -map "[preview_out]" -f fbdev /dev/fb0 \
     -map "[final_broadcast]" -muxpreload 2 -muxdelay 2 -c:v h264_v4l2m2m -b:v 200k -f mpegts "udp://127.0.0.1:$WFB_UDP_PORT?pkt_size=1316&buffer_size=1000000"
