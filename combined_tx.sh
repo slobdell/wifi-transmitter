@@ -83,7 +83,9 @@ echo $USB_DEVICE_PATH > /sys/bus/usb/drivers/usb/bind
 echo "Reset complete."
 
 echo "starting wfb_tx"
-sudo wfb_tx -l 1000 -K /home/eblimp/projects/wifi-transmitter/tx.key -p 1 -u $WFB_UDP_PORT $WLAN_INTERFACE &
+# sudo wfb_tx -l 1000 -K /home/eblimp/projects/wifi-transmitter/tx.key -p 1 -u $WFB_UDP_PORT $WLAN_INTERFACE &
+# add forward error correction with k and n
+sudo wfb_tx -l 1000 -k 8 -n 20 -K /home/eblimp/projects/wifi-transmitter/tx.key -p 1 -u $WFB_UDP_PORT $WLAN_INTERFACE &
 
 #ffmpeg \
 #    -f v4l2 -input_format yuyv422 -video_size $BROADCAST_SIZE -framerate $FRAME_RATE -i "$CAPTURE_INPUT" \
